@@ -1,0 +1,498 @@
+@import "tailwindcss";
+
+/* ============================================================================
+   RESPONSIVE DESIGN SYSTEM
+   Breakpoints:
+   - sm: 640px (Mobile Large)
+   - md: 768px (Tablet)
+   - lg: 1024px (Laptop)
+   - xl: 1280px (Desktop)
+   - 2xl: 1536px (Large Desktop)
+   ============================================================================ */
+
+/* ============================================================================
+   Base Styles
+   ============================================================================ */
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  height: 100%;
+}
+
+/* ============================================================================
+   Height Utilities
+   ============================================================================ */
+.h-screen-safe {
+  height: 100vh;
+  height: 100dvh; /* Dynamic viewport height for mobile browsers */
+}
+
+.h-full-safe {
+  height: 100%;
+}
+
+.min-h-screen-safe {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+
+/* ============================================================================
+   Custom Scrollbar - Responsive
+   ============================================================================ */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+@media (min-width: 768px) {
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.3);
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(51, 65, 85, 0.6);
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(71, 85, 105, 0.8);
+}
+
+/* ============================================================================
+   Animations
+   ============================================================================ */
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+@keyframes audio-wave {
+  0%, 100% { height: 8px; }
+  50% { height: 32px; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
+
+@keyframes slide-up {
+  0% { transform: translateY(100%); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+.animate-pulse-soft { animation: pulse-soft 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+.audio-wave-animation { animation: audio-wave 0.5s ease-in-out infinite; }
+.animate-float { animation: float 3s ease-in-out infinite; }
+.animate-slide-up { animation: slide-up 0.3s ease-out; }
+
+/* ============================================================================
+   Responsive Typography
+   ============================================================================ */
+.text-responsive-xs {
+  @apply text-xs sm:text-sm;
+}
+
+.text-responsive-sm {
+  @apply text-sm sm:text-base;
+}
+
+.text-responsive-base {
+  @apply text-base sm:text-lg;
+}
+
+.text-responsive-lg {
+  @apply text-lg sm:text-xl lg:text-2xl;
+}
+
+/* ============================================================================
+   Responsive Spacing
+   ============================================================================ */
+.padding-responsive-sm {
+  @apply p-3 sm:p-4 lg:p-6;
+}
+
+.padding-responsive-md {
+  @apply p-4 sm:p-6 lg:p-8;
+}
+
+.padding-responsive-lg {
+  @apply p-6 sm:p-8 lg:p-12;
+}
+
+.gap-responsive-sm {
+  @apply gap-2 sm:gap-3 lg:gap-4;
+}
+
+.gap-responsive-md {
+  @apply gap-3 sm:gap-4 lg:gap-6;
+}
+
+.gap-responsive-lg {
+  @apply gap-4 sm:gap-6 lg:gap-8;
+}
+
+/* ============================================================================
+   Touch-Friendly Button Sizes (Minimum 44x44 for mobile)
+   ============================================================================ */
+.btn-touch {
+  @apply min-w-[44px] min-h-[44px] flex items-center justify-center;
+}
+
+.btn-touch-sm {
+  @apply min-w-[36px] min-h-[36px] flex items-center justify-center sm:min-w-[44px] sm:min-h-[44px];
+}
+
+/* ============================================================================
+   Gradient Utilities
+   ============================================================================ */
+.gradient-text {
+  background: linear-gradient(135deg, #10b981 0%, #3b82f6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-bg {
+  background: linear-gradient(135deg, #10b981 0%, #3b82f6 100%);
+}
+
+.gradient-bg-subtle {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
+}
+
+/* ============================================================================
+   Glass Effects
+   ============================================================================ */
+.glass {
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.glass-dark {
+  background: rgba(2, 6, 23, 0.8);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.glass-light {
+  background: rgba(30, 41, 59, 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* ============================================================================
+   Button Variants
+   ============================================================================ */
+.btn-primary {
+  @apply bg-gradient-to-r from-emerald-600 to-blue-600 hover:from-emerald-500 hover:to-blue-500 text-white font-medium py-2.5 px-5 rounded-xl transition-all shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 hover:scale-[1.02] active:scale-[0.98] min-h-[44px] sm:min-h-auto;
+}
+
+.btn-secondary {
+  @apply bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium py-2.5 px-5 rounded-xl transition-all border border-slate-700 hover:border-slate-600 min-h-[44px] sm:min-h-auto;
+}
+
+.btn-ghost {
+  @apply bg-transparent hover:bg-white/5 text-slate-400 hover:text-white font-medium py-2 px-4 rounded-lg transition-all;
+}
+
+.btn-icon {
+  @apply p-2.5 text-slate-400 hover:text-white hover:bg-white/5 rounded-lg transition-all min-w-[44px] min-h-[44px] sm:min-w-auto sm:min-h-auto;
+}
+
+/* ============================================================================
+   Card Variants
+   ============================================================================ */
+.card {
+  @apply bg-slate-900/50 border border-slate-800 rounded-2xl shadow-xl backdrop-blur;
+}
+
+.card-hover {
+  @apply hover:border-slate-700 hover:bg-slate-800/50 transition-all duration-300;
+}
+
+.card-header {
+  @apply p-4 sm:p-5 border-b border-slate-800/50 bg-slate-900/30;
+}
+
+.card-body {
+  @apply p-4 sm:p-5;
+}
+
+/* ============================================================================
+   Input Styles - Responsive
+   ============================================================================ */
+.input {
+  @apply w-full bg-slate-800/50 border border-slate-700 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 text-sm text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-slate-600 outline-none transition-all min-h-[44px] sm:min-h-auto;
+}
+
+.input-disabled {
+  @apply opacity-50 cursor-not-allowed;
+}
+
+.input-error {
+  @apply border-red-500/50 focus:ring-red-500;
+}
+
+/* ============================================================================
+   Badge Variants
+   ============================================================================ */
+.badge {
+  @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium;
+}
+
+.badge-emerald { @apply bg-emerald-500/20 text-emerald-400 border border-emerald-500/20; }
+.badge-blue { @apply bg-blue-500/20 text-blue-400 border border-blue-500/20; }
+.badge-red { @apply bg-red-500/20 text-red-400 border border-red-500/20; }
+.badge-slate { @apply bg-slate-700/50 text-slate-300 border border-slate-600; }
+
+/* ============================================================================
+   Message Bubbles - Responsive
+   ============================================================================ */
+.message-user {
+  @apply bg-gradient-to-br from-emerald-600 to-emerald-700 text-white rounded-2xl px-3 sm:px-4 py-2.5 sm:py-3 max-w-[90%] sm:max-w-[80%] shadow-lg shadow-emerald-500/20;
+}
+
+.message-assistant {
+  @apply bg-slate-800/80 border border-slate-700/50 text-slate-100 rounded-2xl px-3 sm:px-4 py-2.5 sm:py-3 max-w-[90%] sm:max-w-[80%] backdrop-blur shadow-lg;
+}
+
+.message-system {
+  @apply bg-red-500/10 border border-red-500/20 text-red-300 rounded-2xl px-3 sm:px-4 py-2.5 sm:py-3 max-w-[90%] sm:max-w-[80%] backdrop-blur;
+}
+
+/* ============================================================================
+   Connection Status
+   ============================================================================ */
+.status-connected {
+  @apply w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-emerald-500 shadow-lg shadow-emerald-500/50 animate-pulse;
+}
+
+.status-connecting {
+  @apply w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-yellow-500 animate-ping;
+}
+
+.status-disconnected {
+  @apply w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-slate-600;
+}
+
+/* ============================================================================
+   Responsive Grid Layouts
+   ============================================================================ */
+.grid-responsive-2 {
+  @apply grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4;
+}
+
+.grid-responsive-3 {
+  @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4;
+}
+
+.grid-responsive-4 {
+  @apply grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4;
+}
+
+/* ============================================================================
+   Container Utilities
+   ============================================================================ */
+.container-responsive {
+  @apply w-full max-w-[100%] px-4 sm:px-6 lg:px-8 mx-auto;
+}
+
+.container-narrow {
+  @apply w-full max-w-2xl mx-auto px-4;
+}
+
+.container-wide {
+  @apply w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+/* ============================================================================
+   Mobile-First Drawer/Sheet
+   ============================================================================ */
+.drawer-mobile {
+  @apply fixed inset-x-0 bottom-0 z-50 bg-slate-900 rounded-t-2xl border-t border-slate-800 transform transition-transform duration-300;
+}
+
+.drawer-mobile-overlay {
+  @apply fixed inset-0 bg-black/50 backdrop-blur-sm z-40;
+}
+
+/* ============================================================================
+   Responsive Visibility
+   ============================================================================ */
+.show-mobile {
+  @apply block lg:hidden;
+}
+
+.hide-mobile {
+  @apply hidden lg:block;
+}
+
+.show-tablet {
+  @apply hidden md:block lg:hidden;
+}
+
+.show-desktop {
+  @apply hidden lg:block;
+}
+
+/* ============================================================================
+   Focus Visible - Accessible
+   ============================================================================ */
+*:focus-visible {
+  @apply outline-none ring-2 ring-blue-500/50 ring-offset-2 ring-offset-slate-950;
+}
+
+/* ============================================================================
+   Selection
+   ============================================================================ */
+::selection {
+  @apply bg-blue-500/30 text-white;
+}
+
+::-moz-selection {
+  @apply bg-blue-500/30 text-white;
+}
+
+/* ============================================================================
+   Responsive Height Utilities
+   ============================================================================ */
+.h-screen-safe {
+  height: 100vh;
+  height: 100dvh; /* Dynamic viewport height for mobile */
+}
+
+.h-content {
+  @apply h-auto sm:h-full;
+}
+
+/* ============================================================================
+   Flex Responsive
+   ============================================================================ */
+.flex-responsive {
+  @apply flex flex-col lg:flex-row;
+}
+
+.flex-responsive-reverse {
+  @apply flex flex-col-reverse lg:flex-row;
+}
+
+/* ============================================================================
+   Width Utilities - Responsive
+   ============================================================================ */
+.w-full-mobile {
+  @apply w-full lg:w-auto;
+}
+
+.w-auto-desktop {
+  @apply w-full lg:w-64;
+}
+
+/* ============================================================================
+   Overflow Handling
+   ============================================================================ */
+.overflow-safe {
+  @apply overflow-x-hidden overflow-y-auto;
+}
+
+.overflow-touch {
+  @apply overflow-x-auto overflow-y-auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ============================================================================
+   Responsive Shadows
+   ============================================================================ */
+.shadow-responsive {
+  @apply shadow-sm sm:shadow-md lg:shadow-lg;
+}
+
+.shadow-responsive-hover {
+  @apply hover:shadow-sm sm:hover:shadow-md lg:hover:shadow-lg;
+}
+
+/* ============================================================================
+   Border Radius - Responsive
+   ============================================================================ */
+.rounded-responsive {
+  @apply rounded-lg sm:rounded-xl lg:rounded-2xl;
+}
+
+.rounded-responsive-sm {
+  @apply rounded sm:rounded-lg lg:rounded-xl;
+}
+
+/* ============================================================================
+   Transitions
+   ============================================================================ */
+.transition-responsive {
+  @apply transition-all duration-200 sm:duration-300;
+}
+
+/* ============================================================================
+   Custom DataVoice Animations
+   ============================================================================ */
+@keyframes voice-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.05); opacity: 0.8; }
+}
+
+.animate-voice-pulse {
+  animation: voice-pulse 2s ease-in-out infinite;
+}
+
+@keyframes bar-visualizer {
+  0%, 100% { height: 20%; }
+  50% { height: 80%; }
+}
+
+.visualizer-bar {
+  animation: bar-visualizer 0.5s ease-in-out infinite;
+}
+
+.visualizer-bar:nth-child(1) { animation-delay: 0s; }
+.visualizer-bar:nth-child(2) { animation-delay: 0.1s; }
+.visualizer-bar:nth-child(3) { animation-delay: 0.2s; }
+.visualizer-bar:nth-child(4) { animation-delay: 0.3s; }
+.visualizer-bar:nth-child(5) { animation-delay: 0.4s; }
+.visualizer-bar:nth-child(6) { animation-delay: 0.5s; }
+.visualizer-bar:nth-child(7) { animation-delay: 0.6s; }
+
+/* ============================================================================
+   Safe Area Insets (for notched devices)
+   ============================================================================ */
+.safe-top {
+  padding-top: env(safe-area-inset-top);
+}
+
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.safe-left {
+  padding-left: env(safe-area-inset-left);
+}
+
+.safe-right {
+  padding-right: env(safe-area-inset-right);
+}

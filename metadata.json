@@ -1,0 +1,5 @@
+{
+  "name": "DataVoice Agent",
+  "description": "A conversational AI voice assistant for database operations and analytics.",
+  "requestFramePermissions": ["microphone"]
+}
