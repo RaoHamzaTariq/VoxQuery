@@ -1,0 +1,85 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================
+// University Database Schema
+// ============================================
+
+model Student {
+  id             Int      @id @default(autoincrement())
+  name           String
+  email          String   @unique
+  enrollmentYear Int?
+  status         String?  @default("active")
+  gpa            Decimal? @db.Decimal(3, 2)
+  createdAt      DateTime @default(now()) @map("created_at")
+  enrollments    Enrollment[]
+
+  @@map("students")
+}
+
+model Course {
+  id         Int      @id @default(autoincrement())
+  name       String
+  credits    Int?
+  department String?
+  instructor String?
+  createdAt  DateTime @default(now()) @map("created_at")
+  enrollments Enrollment[]
+
+  @@map("courses")
+}
+
+model Enrollment {
+  id        Int      @id @default(autoincrement())
+  student   Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  studentId Int      @map("student_id")
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  courseId  Int      @map("course_id")
+  semester  String?
+  grade     String?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("enrollments")
+}
+
+model Faculty {
+  id         Int       @id @default(autoincrement())
+  name       String
+  department String?
+  position   String?
+  hireDate   DateTime? @map("hire_date") @db.Date
+  createdAt  DateTime  @default(now()) @map("created_at")
+
+  @@map("faculty")
+}
+
+model Department {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  budget    Decimal?  @db.Decimal(12, 2)
+  headOfDept String?  @map("head_of_department")
+  createdAt DateTime  @default(now()) @map("created_at")
+
+  @@map("departments")
+}
+
+model Attendance {
+  id        Int      @id @default(autoincrement())
+  student   Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  studentId Int      @map("student_id")
+  date      DateTime @db.Date
+  status    String   @default("present") // present, absent, late
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("attendance")
+}

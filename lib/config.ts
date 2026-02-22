@@ -1,125 +1,56 @@
 /**
- * DataVoice Agent - Business Configuration
+ * University Voice Portal - Configuration
  * 
- * This file contains customizable settings for your specific business needs.
- * Modify these values to tailor the AI assistant to your industry and use case.
- * 
- * For environment-based configuration, see .env.local
+ * This file contains university-specific settings for the voice portal.
+ * All database connections are managed via environment variables.
  */
 
-export interface BusinessConfig {
+export interface UniversityConfig {
   name: string;
-  industry: IndustryType;
   keyMetrics: string[];
-  customTables: string[];
   defaultCurrency: string;
   dateFormat: string;
-  fiscalYearStart: string;
+  academicYearStart: string;
   customInstructions: string;
 }
 
-export type IndustryType = 
-  | 'retail'
-  | 'ecommerce'
-  | 'saas'
-  | 'healthcare'
-  | 'finance'
-  | 'manufacturing'
-  | 'education'
-  | 'hospitality'
-  | 'real-estate'
-  | 'other';
-
 /**
- * Industry-specific configurations
- * Each industry has predefined key metrics and common table structures
+ * University-specific key metrics
  */
-export const INDUSTRY_PRESETS: Record<IndustryType, { keyMetrics: string[]; customTables: string[] }> = {
-  retail: {
-    keyMetrics: ['revenue', 'orders', 'customers', 'average_order_value'],
-    customTables: ['products', 'orders', 'customers', 'inventory', 'stores'],
-  },
-  ecommerce: {
-    keyMetrics: ['revenue', 'orders', 'conversion_rate', 'cart_abandonment'],
-    customTables: ['products', 'orders', 'customers', 'carts', 'reviews'],
-  },
-  saas: {
-    keyMetrics: ['mrr', 'arr', 'churn_rate', 'active_users'],
-    customTables: ['subscriptions', 'users', 'plans', 'usage_metrics'],
-  },
-  healthcare: {
-    keyMetrics: ['patients', 'appointments', 'revenue', 'readmission_rate'],
-    customTables: ['patients', 'appointments', 'providers', 'insurance'],
-  },
-  finance: {
-    keyMetrics: ['assets', 'liabilities', 'transactions', 'roi'],
-    customTables: ['accounts', 'transactions', 'portfolios', 'clients'],
-  },
-  manufacturing: {
-    keyMetrics: ['production_volume', 'defect_rate', 'inventory_turnover'],
-    customTables: ['products', 'production_runs', 'inventory', 'suppliers'],
-  },
-  education: {
-    keyMetrics: ['students', 'enrollment', 'graduation_rate', 'revenue'],
-    customTables: ['students', 'courses', 'enrollments', 'faculty'],
-  },
-  hospitality: {
-    keyMetrics: ['occupancy_rate', 'revpar', 'bookings', 'guest_satisfaction'],
-    customTables: ['reservations', 'rooms', 'guests', 'bookings'],
-  },
-  'real-estate': {
-    keyMetrics: ['properties', 'occupancy_rate', 'rental_income', 'cap_rate'],
-    customTables: ['properties', 'tenants', 'leases', 'maintenance'],
-  },
-  other: {
-    keyMetrics: ['revenue', 'customers', 'orders'],
-    customTables: [],
-  },
+export const UNIVERSITY_METRICS = {
+  enrollment: ['total_students', 'enrollment_rate', 'retention_rate', 'graduation_rate'],
+  academic: ['average_gpa', 'course_completion_rate', 'attendance_rate', 'faculty_ratio'],
+  financial: ['budget_utilization', 'revenue_per_student', 'department_spending'],
+  operational: ['course_enrollment', 'faculty_workload', 'class_size_average'],
 };
 
 /**
- * Default configuration
- * This will be overridden by environment variables if set
+ * Default university configuration
  */
-export const DEFAULT_CONFIG: BusinessConfig = {
-  name: 'Your Business',
-  industry: 'retail',
-  keyMetrics: INDUSTRY_PRESETS.retail.keyMetrics,
-  customTables: INDUSTRY_PRESETS.retail.customTables,
+export const DEFAULT_UNIVERSITY_CONFIG: UniversityConfig = {
+  name: 'University Portal',
+  keyMetrics: ['total_students', 'enrollment_rate', 'average_gpa', 'attendance_rate'],
   defaultCurrency: 'USD',
   dateFormat: 'YYYY-MM-DD',
-  fiscalYearStart: 'January',
+  academicYearStart: 'September',
   customInstructions: '',
 };
 
 /**
- * Get business configuration from environment variables or use defaults
+ * Get university configuration from environment variables
  */
-export function getBusinessConfig(): BusinessConfig {
-  // Only runs on server-side in Next.js
-  if (typeof window === 'undefined') {
-    const businessName = process.env.BUSINESS_NAME;
-    const industryType = process.env.INDUSTRY_TYPE as IndustryType | undefined;
-    const customInstructions = process.env.CUSTOM_INSTRUCTIONS;
-    const defaultCurrency = process.env.DEFAULT_CURRENCY;
+export function getUniversityConfig(): UniversityConfig {
+  const universityName = process.env.UNIVERSITY_NAME;
+  const customInstructions = process.env.CUSTOM_INSTRUCTIONS;
 
-    const industry = industryType && INDUSTRY_PRESETS[industryType] 
-      ? industryType 
-      : 'retail';
-
-    return {
-      name: businessName || DEFAULT_CONFIG.name,
-      industry,
-      keyMetrics: DEFAULT_CONFIG.keyMetrics,
-      customTables: DEFAULT_CONFIG.customTables,
-      defaultCurrency: defaultCurrency || DEFAULT_CONFIG.defaultCurrency,
-      dateFormat: DEFAULT_CONFIG.dateFormat,
-      fiscalYearStart: DEFAULT_CONFIG.fiscalYearStart,
-      customInstructions: customInstructions || DEFAULT_CONFIG.customInstructions,
-    };
-  }
-
-  return DEFAULT_CONFIG;
+  return {
+    name: universityName || DEFAULT_UNIVERSITY_CONFIG.name,
+    keyMetrics: DEFAULT_UNIVERSITY_CONFIG.keyMetrics,
+    defaultCurrency: DEFAULT_UNIVERSITY_CONFIG.defaultCurrency,
+    dateFormat: DEFAULT_UNIVERSITY_CONFIG.dateFormat,
+    academicYearStart: DEFAULT_UNIVERSITY_CONFIG.academicYearStart,
+    customInstructions: customInstructions || DEFAULT_UNIVERSITY_CONFIG.customInstructions,
+  };
 }
 
 /**
@@ -129,82 +60,98 @@ export const APP_SETTINGS = {
   // Query limits
   MAX_QUERY_RESULTS: 1000,
   QUERY_TIMEOUT_MS: 30000,
-  
+
   // Voice settings
   AUDIO_SAMPLE_RATE: 16000,
   AUDIO_BUFFER_SIZE: 4096,
-  
-  // UI settings
-  DEFAULT_CHART_TYPE: 'bar' as 'bar' | 'line' | 'pie' | 'table' | 'number',
-  ENABLE_DESTRUCTIVE_QUERIES: false,
+
+  // UI settings - simplified for non-technical users
+  DEFAULT_CHART_TYPE: 'bar' as 'bar' | 'line' | 'pie' | 'number',
   
   // Conversation
   MAX_CONVERSATION_HISTORY: 10,
-  
-  // Demo mode
-  ENABLE_DEMO_MODE: true,
 };
 
 /**
- * Get app settings from environment variables
+ * Generate system prompt for Gemini AI - University focused
  */
-export function getAppSettings() {
-  if (typeof window === 'undefined') {
-    return {
-      ...APP_SETTINGS,
-      DEFAULT_CHART_TYPE: (process.env.DEFAULT_CHART_TYPE as any) || APP_SETTINGS.DEFAULT_CHART_TYPE,
-      ENABLE_DESTRUCTIVE_QUERIES: process.env.ENABLE_DESTRUCTIVE_QUERIES === 'true',
-    };
-  }
-  return APP_SETTINGS;
-}
-
-/**
- * Generate system prompt for Gemini AI
- * This creates a customized prompt based on business configuration
- */
-export function generateSystemPrompt(
+export function generateUniversitySystemPrompt(
   schema: string,
-  config: BusinessConfig = DEFAULT_CONFIG
+  config: UniversityConfig = DEFAULT_UNIVERSITY_CONFIG
 ): string {
   const today = new Date().toISOString().split('T')[0];
-  
-  return `You are DataVoice, a friendly and helpful database assistant for ${config.name}.
+
+  return `You are Sara, a friendly female voice assistant for ${config.name} University.
 
 DATABASE SCHEMA:
 ${schema}
 
-BUSINESS CONTEXT:
-- Industry: ${config.industry}
-- Key Metrics: ${config.keyMetrics.join(', ')}
-- Currency: ${config.defaultCurrency}
-- Date Format: ${config.dateFormat}
-- Fiscal Year Start: ${config.fiscalYearStart}
+YOUR ROLE:
+You help university administrators, stakeholders, and leadership get quick insights about university operations through natural conversation.
 
-GUIDELINES:
-1. Speak naturally and concisely, like explaining to a colleague
-2. Always explain what the data means, not just the numbers
-3. Suggest relevant visualizations automatically based on the data
-4. For time-based data, default to line charts
-5. For comparisons across categories, use bar charts
-6. For proportions and distributions, use pie charts
-7. For single values, use number display
-8. For detailed data, use table view
-9. NEVER execute destructive queries (DELETE, DROP, TRUNCATE, UPDATE) without explicit confirmation
-10. If a query might be slow or return many rows, warn the user and suggest adding LIMIT
-11. Format currency values as ${config.defaultCurrency}
-12. Use the date format ${config.dateFormat} when referencing dates
-13. Today's date is ${today}
+RESPONSE GUIDELINES:
+1. Speak naturally and conversationally, like a helpful colleague
+2. Be brief and concise (2-3 sentences max for most responses)
+3. Use contractions and natural language (you're, we've, that's, I'm)
+4. Show enthusiasm for positive findings
+5. NEVER read out all data - it's displayed on screen
+6. ALWAYS reference the visual display: "Check the chart on screen", "You can see the results above"
+7. Share only KEY insights, not every number
+8. Keep spoken responses under 30 seconds (roughly 75 words)
+9. After showing results, ask if they want more detail
 
-${config.customInstructions ? `ADDITIONAL INSTRUCTIONS:\n${config.customInstructions}` : ''}
+CHART SELECTION:
+- Use "number" for single values (totals, counts, percentages)
+- Use "bar" for comparisons across categories (departments, courses)
+- Use "line" for trends over time (enrollment trends, attendance over semesters)
+- Use "pie" for proportions/percentages (student distribution, budget allocation)
 
-RESPONSE FORMAT:
-When you need to query data, use the run_sql_query tool with this structure:
-{
-  "query": "SELECT ...",
-  "chartType": "bar|line|pie|table|number",
-  "explanation": "Brief explanation of what this query shows"
+EXAMPLE INTERACTIONS:
+
+User: "How many students are enrolled this semester?"
+❌ Bad: "You have 1250 students enrolled. Student 1 is John Doe with GPA 3.5, Student 2 is Jane Smith..."
+✅ Good: "We have 1,250 students enrolled this semester. Check the chart on screen to see the breakdown by department. Enrollment is up 8% from last semester!"
+
+User: "What's our average GPA?"
+❌ Bad: "The average GPA is 3.24 calculated from all students where GPA is not null..."
+✅ Good: "Our average GPA is 3.24. The visualization shows the distribution across departments. Engineering has the highest average at 3.45. Would you like to see any specific department?"
+
+User: "Show me attendance rates"
+✅ Good: "I've pulled up the attendance data. Overall attendance is at 87% this month. Check out the line chart to see the trend over the semester. We're seeing improvement since midterms!"
+
+IMPORTANT RULES:
+- NEVER execute DELETE, DROP, TRUNCATE, UPDATE, INSERT without explicit confirmation
+- If asked for destructive operations, politely decline and say you can only provide insights
+- Today's date is ${new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+- If results are empty, say: "Hmm, no results found for that query. Would you like to try something else?"
+- If there's an error, explain simply: "There was an issue retrieving that data. Let me try a different approach."
+
+CONVERSATION FLOW:
+1. Acknowledge the question warmly
+2. Execute query with run_sql_query tool
+3. Share 1-2 key insights verbally
+4. Reference the screen display
+5. Ask if they want more detail or have another question
+
+UNIVERSITY CONTEXT:
+- Focus on student success metrics
+- Highlight trends and comparisons
+- Use percentages and growth rates when relevant
+- Compare current period to previous periods when possible
+
+Remember: Your role is to provide quick, actionable insights to university leadership. Results are ALWAYS shown on screen - your job is to highlight what matters!`;
 }
 
-After receiving query results, summarize the key findings in natural language.`;
+/**
+ * Database configuration from environment variables
+ */
+export function getDatabaseConfig() {
+  return {
+    host: process.env.DB_HOST || 'localhost',
+    port: parseInt(process.env.DB_PORT || '5432', 10),
+    database: process.env.DB_NAME || 'postgres',
+    username: process.env.DB_USER || 'postgres',
+    password: process.env.DB_PASSWORD || '',
+    ssl: process.env.SSL_ENABLED === 'true',
+  };
 }

@@ -12,8 +12,6 @@ import {
   PieChart,
   Pie,
   Cell,
-  AreaChart,
-  Area,
 } from 'recharts';
 import { formatNumber, cn } from '@/lib/utils';
 import { QueryResult } from '@/lib/store';

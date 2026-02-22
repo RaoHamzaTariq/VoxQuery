@@ -1,19 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-export interface DatabaseConnection {
-  id: string;
-  name: string;
-  type: 'mysql' | 'postgres';
-  host: string;
-  port: number;
-  database: string;
-  username: string;
-  password?: string;
-  ssl: boolean;
-  isMock?: boolean;
-}
-
 export interface TableSchema {
   tableName: string;
   columns: {
@@ -27,8 +14,8 @@ export interface TableSchema {
 export interface QueryResult {
   columns: string[];
   rows: any[];
-  executionTime: number;
-  sql: string;
+  executionTime?: number;
+  sql?: string;
 }
 
 export interface Message {
@@ -42,9 +29,6 @@ export interface Message {
 }
 
 interface AppState {
-  connection: DatabaseConnection | null;
-  setConnection: (conn: DatabaseConnection | null) => void;
-
   schema: TableSchema[];
   setSchema: (schema: TableSchema[]) => void;
 
@@ -59,31 +43,22 @@ interface AppState {
   isSpeaking: boolean;
   setIsSpeaking: (isSpeaking: boolean) => void;
 
-  activeView: 'dashboard' | 'connection';
-  setActiveView: (view: 'dashboard' | 'connection') => void;
-
   selectedChartType: 'bar' | 'line' | 'pie' | 'table' | 'number' | null;
   setSelectedChartType: (type: 'bar' | 'line' | 'pie' | 'table' | 'number' | null) => void;
-
-  viewMode: 'chart' | 'table';
-  setViewMode: (mode: 'chart' | 'table') => void;
 }
 
 export const useStore = create<AppState>()(
   persist(
     (set) => ({
-      connection: null,
-      setConnection: (conn) => {
-        // Clear messages when database connection changes (start fresh conversation)
+      schema: [],
+      setSchema: (schema) => {
+        // Clear messages when schema changes (fresh start with new data)
         set({ 
-          connection: conn,
-          messages: [], // Clear previous conversation
-          selectedChartType: null // Reset chart selection
+          schema,
+          messages: [],
+          selectedChartType: null
         });
       },
-
-      schema: [],
-      setSchema: (schema) => set({ schema }),
 
       messages: [],
       addMessage: (msg) => set((state) => ({ messages: [...state.messages, msg] })),
@@ -96,19 +71,12 @@ export const useStore = create<AppState>()(
       isSpeaking: false,
       setIsSpeaking: (isSpeaking) => set({ isSpeaking }),
 
-      activeView: 'connection',
-      setActiveView: (view) => set({ activeView: view }),
-
       selectedChartType: null,
       setSelectedChartType: (type) => set({ selectedChartType: type }),
-
-      viewMode: 'chart',
-      setViewMode: (mode) => set({ viewMode: mode }),
     }),
     {
-      name: 'datavoice-storage',
+      name: 'university-portal-storage',
       partialize: (state) => ({
-        connection: state.connection,
         schema: state.schema,
       }),
     }

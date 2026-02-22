@@ -1,54 +1,94 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useStore } from '@/lib/store';
-import { Sidebar } from '@/components/Sidebar';
-import { ConnectionForm } from '@/components/ConnectionForm';
-import { SchemaBrowser } from '@/components/SchemaBrowser';
-import { ChatInterface } from '@/components/ChatInterface';
-import { InsightCanvas } from '@/components/InsightCanvas';
+import { UniversitySidebar } from '@/components/UniversitySidebar';
+import { VoiceBot } from '@/components/VoiceBot';
+import { InsightsPanel } from '@/components/InsightsPanel';
 
 export function AppShell() {
-  const { activeView } = useStore();
   const [mounted, setMounted] = React.useState(false);
+  const [loading, setLoading] = React.useState(true);
+  const [loadError, setLoadError] = React.useState<string | null>(null);
+  const { setSchema } = useStore();
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  // Load schema on mount
+  React.useEffect(() => {
+    const loadSchema = async () => {
+      try {
+        console.log('🔄 Loading university data schema...');
+        const response = await fetch('/api/db/schema', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+        });
 
-  if (!mounted) return null;
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || data.details || 'Failed to load university data');
+        }
+
+        console.log('✅ Schema loaded:', data.schema.length, 'tables');
+        setSchema(data.schema);
+        setLoadError(null);
+      } catch (err: any) {
+        console.error('❌ Schema load error:', err);
+        setLoadError(err.message || 'Failed to connect to university database');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadSchema();
+  }, [setSchema]);
+
+  if (!mounted) {
+    React.useEffect(() => {
+      setMounted(true);
+    }, []);
+    return null;
+  }
 
   return (
     <div className="flex h-screen w-full bg-[#0f172a] text-slate-100 overflow-hidden font-sans">
-      {/* Sidebar */}
-      <Sidebar />
+      {/* Left Sidebar - University Navigation */}
+      <UniversitySidebar />
 
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col min-w-0 h-screen-safe">
-        {activeView === 'connection' && (
-          <div className="flex-1 flex flex-col lg:flex-row overflow-y-auto bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
-            <div className="w-full lg:w-1/2 flex items-start justify-center p-4 lg:p-6 overflow-y-auto">
-              <ConnectionForm />
+      {/* Center - Voice Bot Interface */}
+      <div className="flex-1 flex flex-col min-w-0 h-full border-r border-slate-800 relative">
+        {loading ? (
+          <div className="flex flex-col items-center justify-center h-full w-full">
+            <div className="relative mb-6">
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-indigo-500/20 rounded-full blur-2xl animate-pulse" />
+              <div className="relative w-16 h-16 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-full flex items-center justify-center animate-spin">
+                <div className="w-8 h-8 border-2 border-white/30 border-t-white rounded-full" />
+              </div>
             </div>
-            <div className="hidden lg:block w-full lg:w-1/2 p-4 lg:p-6">
-              <SchemaBrowser />
-            </div>
+            <h2 className="text-xl font-bold text-white mb-2">Connecting to University Portal</h2>
+            <p className="text-slate-400 text-sm">Loading your data...</p>
           </div>
-        )}
-
-        {activeView === 'dashboard' && (
-          <div className="flex-1 flex flex-col lg:flex-row overflow-hidden relative h-full">
-            {/* Chat Interface - Full width on mobile, left panel on desktop */}
-            <div className="flex-1 flex flex-col min-w-0 h-full">
-              <ChatInterface />
+        ) : loadError ? (
+          <div className="flex flex-col items-center justify-center h-full w-full p-8">
+            <div className="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center mb-4">
+              <span className="text-3xl">⚠️</span>
             </div>
-
-            {/* Desktop Insights Panel - Always visible on desktop */}
-            <div className="hidden lg:block w-[400px] xl:w-[450px] h-full shrink-0">
-              <InsightCanvas />
-            </div>
+            <h2 className="text-xl font-bold text-white mb-2">Connection Error</h2>
+            <p className="text-red-400 text-sm mb-6 max-w-md text-center">{loadError}</p>
+            <button
+              onClick={() => window.location.reload()}
+              className="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-full font-medium transition-all"
+            >
+              Try Again
+            </button>
           </div>
+        ) : (
+          <VoiceBot />
         )}
+      </div>
+
+      {/* Right Panel - Insights & Data */}
+      <div className="w-[400px] xl:w-[450px] h-full shrink-0">
+        <InsightsPanel />
       </div>
     </div>
   );

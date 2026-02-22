@@ -6,10 +6,10 @@ const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 const jetbrainsMono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono' });
 
 export const metadata: Metadata = {
-  title: 'DataVoice Agent - Voice-Controlled Database Assistant',
-  description: 'Interact with your database using natural voice commands. Get instant insights, charts, and analytics through conversational AI.',
-  keywords: ['database', 'voice assistant', 'AI', 'analytics', 'SQL', 'Gemini', 'data visualization'],
-  authors: [{ name: 'DataVoice Team' }],
+  title: 'University Voice Portal - AI Assistant',
+  description: 'Voice-controlled university data assistant for administrators and stakeholders. Get instant insights about enrollment, attendance, GPA, and more.',
+  keywords: ['university', 'voice assistant', 'AI', 'education', 'analytics', 'enrollment', 'student data'],
+  authors: [{ name: 'University Portal Team' }],
   viewport: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no',
   themeColor: '#0f172a',
 };
