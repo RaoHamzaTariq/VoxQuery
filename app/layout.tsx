@@ -12,6 +12,17 @@ export const metadata: Metadata = {
   authors: [{ name: 'University Portal Team' }],
   viewport: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no',
   themeColor: '#0f172a',
+  icons: {
+    icon: [
+      { url: '/favicons/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicons/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+    ],
+    apple: '/favicons/apple-touch-icon.png',
+    other: [
+      { rel: 'icon', url: '/favicons/favicon.ico' },
+    ],
+  },
+  manifest: '/favicons/site.webmanifest',
 };
 
 export default function RootLayout({
