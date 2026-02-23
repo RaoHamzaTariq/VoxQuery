@@ -48,29 +48,29 @@ export function VoiceBot() {
   }, [isSpeaking, interruptSpeaking]);
 
   return (
-    <div className="flex flex-col items-center justify-center h-full w-full relative">
+    <div className="flex flex-col items-center justify-center h-full w-full relative px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
       {/* Connection Status */}
-      <div className="absolute top-4 left-1/2 -translate-x-1/2 z-10">
+      <div className="absolute top-2 sm:top-4 left-1/2 -translate-x-1/2 z-10 w-full max-w-sm px-2">
         <div className={cn(
-          "flex items-center gap-2 px-4 py-2 rounded-full backdrop-blur-sm border transition-all",
-          connectionStatus === 'connected' 
-            ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-400" 
+          "flex items-center justify-center gap-2 px-3 sm:px-4 py-2 rounded-full backdrop-blur-sm border transition-all",
+          connectionStatus === 'connected'
+            ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-400"
             : connectionStatus === 'connecting'
               ? "bg-yellow-500/10 border-yellow-500/20 text-yellow-400"
               : "bg-slate-800/50 border-slate-700 text-slate-400"
         )}>
           <div className={cn(
-            "w-2 h-2 rounded-full",
+            "w-2 h-2 rounded-full flex-shrink-0",
             connectionStatus === 'connected' ? "bg-emerald-500 animate-pulse" :
             connectionStatus === 'connecting' ? "bg-yellow-500 animate-ping" :
             "bg-slate-500"
           )} />
-          <span className="text-xs font-medium">
-            {connectionStatus === 'connected' 
-              ? isListening 
-                ? "Listening..." 
-                : isSpeaking 
-                  ? "Speaking..." 
+          <span className="text-xs font-medium truncate">
+            {connectionStatus === 'connected'
+              ? isListening
+                ? "Listening..."
+                : isSpeaking
+                  ? "Speaking..."
                   : "Ready to assist"
               : connectionStatus === 'connecting'
                 ? "Connecting..."
@@ -80,9 +80,9 @@ export function VoiceBot() {
       </div>
 
       {/* Main Voice Interface */}
-      <div className="flex flex-col items-center justify-center gap-8">
+      <div className="flex flex-col items-center justify-center gap-6 sm:gap-8 w-full max-w-3xl">
         {/* Animated Voice Orb */}
-        <div className="relative">
+        <div className="relative flex-shrink-0">
           {/* Outer glow rings */}
           {(isListening || isSpeaking) && (
             <>
@@ -109,8 +109,8 @@ export function VoiceBot() {
                   key={i}
                   className={cn(
                     "absolute rounded-full border transition-all duration-150",
-                    isListening 
-                      ? "border-emerald-500/30" 
+                    isListening
+                      ? "border-emerald-500/30"
                       : "border-blue-500/30"
                   )}
                   style={{
@@ -129,7 +129,7 @@ export function VoiceBot() {
             onClick={toggleRecording}
             disabled={!isConnected || isSpeaking}
             className={cn(
-              "relative w-32 h-32 sm:w-40 sm:h-40 rounded-full flex items-center justify-center transition-all duration-500 shadow-2xl",
+              "relative w-28 h-28 sm:w-36 sm:h-36 md:w-40 md:h-40 rounded-full flex items-center justify-center transition-all duration-500 shadow-2xl touch-manipulation",
               "hover:scale-105 active:scale-95",
               isListening
                 ? "bg-gradient-to-br from-emerald-500 to-emerald-600 shadow-emerald-500/50 animate-pulse"
@@ -140,19 +140,19 @@ export function VoiceBot() {
             )}
           >
             {/* Inner icon */}
-            <div className="relative">
+            <div className="relative z-10">
               {isListening ? (
-                <MicOff className="w-12 h-12 sm:w-16 sm:h-16 text-white" />
+                <MicOff className="w-10 h-10 sm:w-14 sm:h-14 md:w-16 md:h-16 text-white" />
               ) : (
-                <Mic className="w-12 h-12 sm:w-16 sm:h-16 text-white" />
+                <Mic className="w-10 h-10 sm:w-14 sm:h-14 md:w-16 md:h-16 text-white" />
               )}
             </div>
 
             {/* Orb inner glow */}
             <div className={cn(
               "absolute inset-0 rounded-full opacity-30",
-              isListening 
-                ? "bg-gradient-to-br from-white to-emerald-300 blur-xl" 
+              isListening
+                ? "bg-gradient-to-br from-white to-emerald-300 blur-xl"
                 : isSpeaking
                   ? "bg-gradient-to-br from-white to-blue-300 blur-xl"
                   : "bg-gradient-to-br from-white to-slate-500 blur-xl"
@@ -161,19 +161,19 @@ export function VoiceBot() {
         </div>
 
         {/* Status Text */}
-        <div className="text-center space-y-2">
-          <h2 className="text-xl sm:text-2xl font-bold text-white">
-            {isListening 
-              ? "I'm listening..." 
+        <div className="text-center space-y-2 px-2 sm:px-4 w-full">
+          <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-white leading-tight">
+            {isListening
+              ? "I'm listening..."
               : isSpeaking
                 ? "Sara is speaking..."
                 : isConnected
                   ? "Tap to ask a question"
                   : "Connecting to university portal..."}
           </h2>
-          <p className="text-slate-400 text-sm sm:text-base max-w-md">
-            {isListening 
-              ? "Go ahead, I'm ready to help" 
+          <p className="text-slate-400 text-xs sm:text-sm md:text-base max-w-md mx-auto leading-relaxed">
+            {isListening
+              ? "Go ahead, I'm ready to help"
               : isSpeaking
                 ? "Press spacebar or tap to interrupt"
                 : isConnected
@@ -184,7 +184,7 @@ export function VoiceBot() {
 
         {/* Example Questions */}
         {isConnected && !isListening && !isSpeaking && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-2xl w-full px-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 w-full px-2 sm:px-4">
             {[
               "How many students are enrolled?",
               "What is the average GPA?",
@@ -193,7 +193,7 @@ export function VoiceBot() {
             ].map((question, i) => (
               <div
                 key={i}
-                className="bg-slate-800/50 border border-slate-700/50 rounded-xl px-4 py-3 text-sm text-slate-300 backdrop-blur-sm"
+                className="bg-slate-800/50 border border-slate-700/50 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm text-slate-300 backdrop-blur-sm break-words"
               >
                 💬 {question}
               </div>
@@ -204,13 +204,13 @@ export function VoiceBot() {
 
       {/* Error Display */}
       {error && (
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 w-full max-w-md mx-auto px-4">
-          <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-4 text-red-300 text-sm backdrop-blur-sm">
-            <div className="flex items-start gap-3">
-              <span className="text-lg">⚠️</span>
-              <div>
+        <div className="absolute bottom-20 sm:bottom-24 left-1/2 -translate-x-1/2 w-full max-w-md mx-auto px-4">
+          <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-3 sm:p-4 text-red-300 text-xs sm:text-sm backdrop-blur-sm">
+            <div className="flex items-start gap-2 sm:gap-3">
+              <span className="text-base sm:text-lg flex-shrink-0">⚠️</span>
+              <div className="min-w-0 flex-1">
                 <p className="font-medium">Connection Issue</p>
-                <p className="mt-1 opacity-80">{error}</p>
+                <p className="mt-1 opacity-80 break-words">{error}</p>
               </div>
             </div>
           </div>
@@ -221,15 +221,15 @@ export function VoiceBot() {
       {isSpeaking && (
         <button
           onClick={interruptSpeaking}
-          className="absolute bottom-8 px-6 py-3 bg-red-600 hover:bg-red-500 text-white text-sm rounded-full font-medium transition-all flex items-center gap-2 shadow-lg animate-in fade-in zoom-in duration-200"
+          className="absolute bottom-20 sm:bottom-24 px-5 sm:px-6 py-2.5 sm:py-3 bg-red-600 hover:bg-red-500 text-white text-xs sm:text-sm rounded-full font-medium transition-all flex items-center gap-2 shadow-lg animate-in fade-in zoom-in duration-200 touch-manipulation min-h-[44px]"
         >
-          <StopCircle className="w-5 h-5" />
+          <StopCircle className="w-4 h-4 sm:w-5 sm:h-5" />
           Stop
         </button>
       )}
 
       {/* Helper Text */}
-      <div className="absolute bottom-4 text-center">
+      <div className="absolute bottom-2 sm:bottom-4 text-center px-4 w-full">
         <p className="text-xs text-slate-500">
           {isConnected && !isListening && !isSpeaking && "Press spacebar to interrupt • Tap mic to speak"}
         </p>

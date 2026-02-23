@@ -74,14 +74,14 @@ export function InsightsPanel() {
   return (
     <div className="flex flex-col h-full w-full bg-gradient-to-b from-slate-900 to-slate-950">
       {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b border-slate-800 bg-slate-900/50 backdrop-blur-sm shrink-0">
-        <div className="flex items-center gap-3">
-          <div className="w-9 h-9 bg-gradient-to-br from-emerald-500/20 to-blue-500/20 rounded-lg flex items-center justify-center border border-emerald-500/20">
-            <BarChart3 className="w-5 h-5 text-emerald-400" />
+      <div className="flex items-center justify-between p-3 sm:p-4 border-b border-slate-800 bg-slate-900/50 backdrop-blur-sm shrink-0">
+        <div className="flex items-center gap-2 sm:gap-3">
+          <div className="w-8 h-8 sm:w-9 sm:h-9 bg-gradient-to-br from-emerald-500/20 to-blue-500/20 rounded-lg flex items-center justify-center border border-emerald-500/20">
+            <BarChart3 className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-400" />
           </div>
           <div>
-            <h2 className="text-white font-semibold text-sm">Insights</h2>
-            <p className="text-xs text-slate-400">
+            <h2 className="text-white font-semibold text-xs sm:text-sm">Insights</h2>
+            <p className="text-xs text-slate-400 hidden sm:block">
               {displayData ? 'Data visualization' : 'Awaiting your question'}
             </p>
           </div>
@@ -89,18 +89,18 @@ export function InsightsPanel() {
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto custom-scrollbar p-4 space-y-4">
+      <div className="flex-1 overflow-y-auto custom-scrollbar p-3 sm:p-4 space-y-3 sm:space-y-4">
         {!displayData ? (
           /* Empty State */
           <div className="h-full flex flex-col items-center justify-center text-center px-4 py-8">
             <div className="relative mb-4">
               <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-blue-500/10 rounded-full blur-xl" />
-              <div className="relative w-16 h-16 bg-slate-800/50 border border-slate-700/50 rounded-full flex items-center justify-center">
-                <BarChart3 className="w-8 h-8 text-slate-600" />
+              <div className="relative w-14 h-14 sm:w-16 sm:h-16 bg-slate-800/50 border border-slate-700/50 rounded-full flex items-center justify-center">
+                <BarChart3 className="w-7 h-7 sm:w-8 sm:h-8 text-slate-600" />
               </div>
             </div>
             <h3 className="text-white font-semibold mb-1 text-sm">No Data Yet</h3>
-            <p className="text-slate-400 text-xs max-w-xs">
+            <p className="text-slate-400 text-xs max-w-xs px-4">
               Ask a question using the voice bot to see insights and visualizations
             </p>
           </div>
@@ -108,30 +108,30 @@ export function InsightsPanel() {
           <>
             {/* Key Metric Card */}
             {metrics && (
-              <div className="bg-gradient-to-br from-emerald-500/10 to-blue-500/10 rounded-2xl p-4 border border-emerald-500/20 backdrop-blur-sm">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center gap-2">
+              <div className="bg-gradient-to-br from-emerald-500/10 to-blue-500/10 rounded-xl sm:rounded-2xl p-3 sm:p-4 border border-emerald-500/20 backdrop-blur-sm">
+                <div className="flex items-center justify-between mb-2 sm:mb-3">
+                  <div className="flex items-center gap-1.5 sm:gap-2">
                     {React.createElement(getMetricIcon(metrics.column), {
-                      className: "w-5 h-5 text-emerald-400"
+                      className: "w-4 h-4 sm:w-5 sm:h-5 text-emerald-400"
                     })}
-                    <span className="text-xs text-slate-400 uppercase tracking-wider font-medium">
+                    <span className="text-xs text-slate-400 uppercase tracking-wider font-medium truncate max-w-[180px] sm:max-w-none">
                       {metrics.column.replace(/_/g, ' ')}
                     </span>
                   </div>
                   {metrics.trend !== 0 && (
                     <div className={cn(
-                      "flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium",
-                      metrics.trend >= 0 
-                        ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/20" 
+                      "flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium flex-shrink-0",
+                      metrics.trend >= 0
+                        ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/20"
                         : "bg-red-500/20 text-red-400 border border-red-500/20"
                     )}>
-                      {metrics.trend >= 0 ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
+                      {metrics.trend >= 0 ? <TrendingUp className="w-2.5 h-2.5 sm:w-3 sm:h-3" /> : <TrendingDown className="w-2.5 h-2.5 sm:w-3 sm:h-3" />}
                       {Math.abs(metrics.trend).toFixed(1)}%
                     </div>
                   )}
                 </div>
-                <div className="flex items-baseline gap-2">
-                  <span className="text-3xl font-bold text-white">
+                <div className="flex items-baseline gap-1.5 sm:gap-2 flex-wrap">
+                  <span className="text-2xl sm:text-3xl font-bold text-white">
                     {formatValue(metrics.total, metrics.column)}
                   </span>
                   {metrics.average !== metrics.total && (
@@ -144,22 +144,22 @@ export function InsightsPanel() {
             )}
 
             {/* Main Chart Card */}
-            <div className="bg-slate-800/30 rounded-2xl p-4 border border-slate-700/50 backdrop-blur-sm">
-              <div className="flex items-center justify-between mb-3">
-                <h4 className="text-sm font-semibold text-white">Visualization</h4>
+            <div className="bg-slate-800/30 rounded-xl sm:rounded-2xl p-3 sm:p-4 border border-slate-700/50 backdrop-blur-sm">
+              <div className="flex items-center justify-between mb-2 sm:mb-3">
+                <h4 className="text-xs sm:text-sm font-semibold text-white">Visualization</h4>
                 <span className="text-xs bg-slate-700 text-slate-300 px-2 py-1 rounded-full capitalize">
                   {chartType}
                 </span>
               </div>
 
-              <div className="h-[280px] w-full">
+              <div className="h-[240px] sm:h-[280px] w-full">
                 <Visualization type={chartType} data={displayData} />
               </div>
             </div>
 
             {/* Data Summary */}
             {displayData.rows.length > 0 && (
-              <div className="bg-slate-800/30 rounded-xl p-4 border border-slate-700/50">
+              <div className="bg-slate-800/30 rounded-xl p-3 sm:p-4 border border-slate-700/50">
                 <h4 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">
                   Summary
                 </h4>
@@ -169,10 +169,10 @@ export function InsightsPanel() {
                     const value = Object.values(row)[0];
                     return (
                       <div key={index} className="flex items-center justify-between py-1.5 border-b border-slate-700/50 last:border-0">
-                        <span className="text-xs text-slate-300 capitalize">
+                        <span className="text-xs text-slate-300 capitalize truncate max-w-[60%]">
                           {String(label).replace(/_/g, ' ')}
                         </span>
-                        <span className="text-xs font-semibold text-white">
+                        <span className="text-xs font-semibold text-white flex-shrink-0">
                           {formatValueSimple(value)}
                         </span>
                       </div>
@@ -189,13 +189,13 @@ export function InsightsPanel() {
 
             {/* Auto Insights */}
             {metrics && metrics.trend !== 0 && (
-              <div className="bg-gradient-to-br from-blue-500/10 to-indigo-500/10 rounded-xl p-4 border border-blue-500/20">
+              <div className="bg-gradient-to-br from-blue-500/10 to-indigo-500/10 rounded-xl p-3 sm:p-4 border border-blue-500/20">
                 <div className="flex items-center gap-2 mb-2">
-                  <BarChart3 className="w-4 h-4 text-blue-400" />
-                  <h4 className="text-sm font-semibold text-white">Insight</h4>
+                  <BarChart3 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-400" />
+                  <h4 className="text-xs sm:text-sm font-semibold text-white">Insight</h4>
                 </div>
                 <p className="text-xs text-slate-300 leading-relaxed">
-                  {metrics.trend >= 0 
+                  {metrics.trend >= 0
                     ? `↑ There's a positive trend of ${Math.abs(metrics.trend).toFixed(1)}% in the data`
                     : `↓ There's a decline of ${Math.abs(metrics.trend).toFixed(1)}% in the data`
                   }
