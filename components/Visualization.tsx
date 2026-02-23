@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import {
   BarChart,
   Bar,
@@ -12,8 +12,6 @@ import {
   PieChart,
   Pie,
   Cell,
-  AreaChart,
-  Area,
 } from 'recharts';
 import { formatNumber, cn } from '@/lib/utils';
 import { QueryResult } from '@/lib/store';
@@ -26,6 +24,8 @@ interface VisualizationProps {
 const COLORS = ['#10b981', '#3b82f6', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#06b6d4', '#84cc16'];
 
 export function Visualization({ type, data }: VisualizationProps) {
+  const chartContainerRef = useRef<HTMLDivElement>(null);
+
   if (!data || !data.rows || data.rows.length === 0) {
     return (
       <div className="flex items-center justify-center h-full text-slate-500">
@@ -39,15 +39,15 @@ export function Visualization({ type, data }: VisualizationProps) {
 
   const chartData = data.rows;
   const keys = Object.keys(chartData[0]);
-  
+
   // Determine axis keys intelligently
   let xAxisKey = keys[0];
   let dataKey = keys[1];
-  
+
   // Look for date/time columns for x-axis
   const datePatterns = ['date', 'time', 'day', 'month', 'year', 'created', 'updated'];
   const categoryPatterns = ['name', 'type', 'status', 'category', 'id'];
-  
+
   for (const key of keys) {
     const lowerKey = key.toLowerCase();
     if (datePatterns.some(p => lowerKey.includes(p))) {
@@ -55,7 +55,7 @@ export function Visualization({ type, data }: VisualizationProps) {
       break;
     }
   }
-  
+
   // Find numeric column for data
   for (const key of keys) {
     if (key !== xAxisKey && typeof chartData[0][key] === 'number') {
@@ -97,8 +97,8 @@ export function Visualization({ type, data }: VisualizationProps) {
           <thead className="bg-slate-800/50 sticky top-0 z-10">
             <tr>
               {data.columns.map((col, idx) => (
-                <th 
-                  key={idx} 
+                <th
+                  key={idx}
                   className="p-3 text-xs font-semibold text-slate-400 uppercase tracking-wider border-b border-slate-700 whitespace-nowrap"
                 >
                   {col.replace(/_/g, ' ')}
@@ -142,9 +142,9 @@ export function Visualization({ type, data }: VisualizationProps) {
   };
 
   const commonTooltipProps = {
-    contentStyle: { 
-      backgroundColor: '#1e293b', 
-      borderColor: '#334155', 
+    contentStyle: {
+      backgroundColor: '#1e293b',
+      borderColor: '#334155',
       color: '#f8fafc',
       borderRadius: '8px',
       fontSize: '12px',
@@ -154,69 +154,96 @@ export function Visualization({ type, data }: VisualizationProps) {
   };
 
   return (
-    <div className="w-full h-full">
-      <ResponsiveContainer width="100%" height="100%">
-        {type === 'bar' ? (
-          <BarChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#334155" vertical={false} />
-            <XAxis {...commonXAxisProps} angle={-45} textAnchor="end" height={60} />
-            <YAxis {...commonYAxisProps} />
-            <Tooltip {...commonTooltipProps} />
-            <Bar dataKey={dataKey} fill="#10b981" radius={[4, 4, 0, 0]} />
-          </BarChart>
-        ) : type === 'line' ? (
-          <LineChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#334155" vertical={false} />
-            <XAxis {...commonXAxisProps} angle={-45} textAnchor="end" height={60} />
-            <YAxis {...commonYAxisProps} />
-            <Tooltip {...commonTooltipProps} />
-            <Line
-              type="monotone"
-              dataKey={dataKey}
-              stroke="#3b82f6"
-              strokeWidth={2}
-              dot={{ fill: '#3b82f6', strokeWidth: 2, r: 3 }}
-              activeDot={{ r: 5, fill: '#60a5fa' }}
-            />
-          </LineChart>
-        ) : type === 'pie' ? (
-          <PieChart>
-            <Pie
-              data={chartData}
-              cx="50%"
-              cy="50%"
-              labelLine={false}
-              outerRadius="80%"
-              fill="#8884d8"
-              dataKey={dataKey}
-              nameKey={xAxisKey}
-              label={({ name, percent }: { name?: string; percent?: number }) => 
-                `${name || ''} ${(percent ? (percent * 100).toFixed(0) : '0')}%`
-              }
-            >
-              {chartData.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-              ))}
-            </Pie>
-            <Tooltip {...commonTooltipProps} />
-          </PieChart>
+    <div className="w-full h-full min-h-[200px]">
+      <div ref={chartContainerRef} className="w-full h-full">
+        {type === 'pie' ? (
+          <div className="w-full h-full flex items-center justify-center" style={{ minHeight: '200px' }}>
+            <PieChart width={280} height={280}>
+              <Pie
+                data={chartData.map((entry) => ({
+                  name: String(entry[xAxisKey]),
+                  value: typeof entry[dataKey] === 'number' ? entry[dataKey] : 0,
+                }))}
+                cx="50%"
+                cy="50%"
+                labelLine={false}
+                outerRadius={100}
+                fill="#8884d8"
+                dataKey="value"
+                label={(props: any) => {
+                  const name = props.name || '';
+                  const percent = props.percent || 0;
+                  return `${name}: ${(percent * 100).toFixed(0)}%`;
+                }}
+              >
+                {chartData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                ))}
+              </Pie>
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: '#1e293b',
+                  borderColor: '#334155',
+                  color: '#f8fafc',
+                  borderRadius: '8px',
+                  fontSize: '12px',
+                }}
+                formatter={(value: any) => {
+                  if (typeof value === 'number') {
+                    return new Intl.NumberFormat('en-US', {
+                      minimumFractionDigits: 0,
+                      maximumFractionDigits: 2,
+                    }).format(value);
+                  }
+                  return String(value);
+                }}
+              />
+            </PieChart>
+          </div>
         ) : (
-          <BarChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#334155" vertical={false} />
-            <XAxis {...commonXAxisProps} angle={-45} textAnchor="end" height={60} />
-            <YAxis {...commonYAxisProps} />
-            <Tooltip {...commonTooltipProps} />
-            <Bar dataKey={dataKey} fill="#10b981" radius={[4, 4, 0, 0]} />
-          </BarChart>
+          <ResponsiveContainer width="100%" height="100%" minHeight={200}>
+            {type === 'bar' ? (
+              <BarChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#334155" vertical={false} />
+                <XAxis {...commonXAxisProps} angle={-45} textAnchor="end" height={60} />
+                <YAxis {...commonYAxisProps} />
+                <Tooltip {...commonTooltipProps} />
+                <Bar dataKey={dataKey} fill="#10b981" radius={[4, 4, 0, 0]} />
+              </BarChart>
+            ) : type === 'line' ? (
+              <LineChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#334155" vertical={false} />
+                <XAxis {...commonXAxisProps} angle={-45} textAnchor="end" height={60} />
+                <YAxis {...commonYAxisProps} />
+                <Tooltip {...commonTooltipProps} />
+                <Line
+                  type="monotone"
+                  dataKey={dataKey}
+                  stroke="#3b82f6"
+                  strokeWidth={2}
+                  dot={{ fill: '#3b82f6', strokeWidth: 2, r: 3 }}
+                  activeDot={{ r: 5, fill: '#60a5fa' }}
+                />
+              </LineChart>
+            ) : (
+              <BarChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#334155" vertical={false} />
+                <XAxis {...commonXAxisProps} angle={-45} textAnchor="end" height={60} />
+                <YAxis {...commonYAxisProps} />
+                <Tooltip {...commonTooltipProps} />
+                <Bar dataKey={dataKey} fill="#10b981" radius={[4, 4, 0, 0]} />
+              </BarChart>
+            )}
+          </ResponsiveContainer>
         )}
-      </ResponsiveContainer>
+      </div>
     </div>
   );
 }
 
 function formatCellValue(value: any, columnName: string): string {
   if (value === null || value === undefined) return '-';
-  
+
   if (typeof value === 'number') {
     // Return plain number without currency symbol
     return new Intl.NumberFormat('en-US', {
@@ -224,10 +251,10 @@ function formatCellValue(value: any, columnName: string): string {
       maximumFractionDigits: 2,
     }).format(value);
   }
-  
+
   if (typeof value === 'object') {
     return JSON.stringify(value);
   }
-  
+
   return String(value);
 }

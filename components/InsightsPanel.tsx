@@ -12,7 +12,8 @@ import {
   BookOpen,
   Award,
   Calendar,
-  DollarSign
+  DollarSign,
+  Download
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -155,6 +156,21 @@ export function InsightsPanel() {
               <div className="h-[240px] sm:h-[280px] w-full">
                 <Visualization type={chartType} data={displayData} />
               </div>
+
+              {/* Download Button - Separate from chart */}
+              <div className="flex justify-end mt-3 pt-3 border-t border-slate-700/50">
+                <button
+                  onClick={() => {
+                    const chartContainer = document.querySelector('.bg-slate-800\\/30 svg');
+                    if (!chartContainer) return;
+                    downloadChartAsPNG(chartContainer as SVGElement, `chart-${Date.now()}`);
+                  }}
+                  className="flex items-center gap-2 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-slate-200 hover:text-white rounded-lg transition-all text-xs sm:text-sm font-medium min-h-[40px] touch-manipulation"
+                >
+                  <Download className="w-4 h-4" />
+                  Download Chart
+                </button>
+              </div>
             </div>
 
             {/* Data Summary */}
@@ -245,4 +261,45 @@ function formatValueSimple(value: any): string {
     }).format(value);
   }
   return String(value);
+}
+
+// Download chart as PNG
+async function downloadChartAsPNG(svgElement: SVGElement, filename: string) {
+  try {
+    // Serialize SVG
+    const svgData = new XMLSerializer().serializeToString(svgElement);
+    const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+    const svgUrl = URL.createObjectURL(svgBlob);
+
+    // Create image and draw to canvas
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      canvas.width = img.width * 2;
+      canvas.height = img.height * 2;
+      ctx.scale(2, 2);
+      ctx.fillStyle = '#1e293b';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(img, 0, 0);
+
+      // Download as PNG
+      canvas.toBlob((blob) => {
+        if (!blob) return;
+        const pngUrl = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.download = `${filename}.png`;
+        link.href = pngUrl;
+        link.click();
+        URL.revokeObjectURL(pngUrl);
+      }, 'image/png');
+
+      URL.revokeObjectURL(svgUrl);
+    };
+    img.src = svgUrl;
+  } catch (error) {
+    console.error('Failed to download chart:', error);
+  }
 }
