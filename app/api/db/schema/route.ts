@@ -40,7 +40,7 @@ export async function GET() {
       schema,
       connection: {
         type: 'postgres',
-        database: process.env.DB_NAME || 'postgres',
+        database: 'Supabase PostgreSQL',
         tables: schema.length,
       }
     });

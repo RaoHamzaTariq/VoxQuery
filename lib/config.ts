@@ -147,11 +147,7 @@ Remember: Your role is to provide quick, actionable insights to university leade
  */
 export function getDatabaseConfig() {
   return {
-    host: process.env.DB_HOST || 'localhost',
-    port: parseInt(process.env.DB_PORT || '5432', 10),
-    database: process.env.DB_NAME || 'postgres',
-    username: process.env.DB_USER || 'postgres',
-    password: process.env.DB_PASSWORD || '',
+    connectionString: process.env.DATABASE_URL || '',
     ssl: process.env.SSL_ENABLED === 'true',
   };
 }

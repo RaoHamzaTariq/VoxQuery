@@ -12,6 +12,11 @@ export function AppShell() {
   const [loadError, setLoadError] = React.useState<string | null>(null);
   const { setSchema } = useStore();
 
+  // Set mounted state
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
   // Load schema on mount
   React.useEffect(() => {
     const loadSchema = async () => {
@@ -39,15 +44,10 @@ export function AppShell() {
       }
     };
 
-    loadSchema();
-  }, [setSchema]);
-
-  if (!mounted) {
-    React.useEffect(() => {
-      setMounted(true);
-    }, []);
-    return null;
-  }
+    if (mounted) {
+      loadSchema();
+    }
+  }, [setSchema, mounted]);
 
   return (
     <div className="flex h-screen w-full bg-[#0f172a] text-slate-100 overflow-hidden font-sans">

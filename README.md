@@ -90,17 +90,13 @@ cp .env.example .env.local
 1. **Get Supabase Credentials:**
    - Go to [supabase.com](https://supabase.com)
    - Select your project
-   - Settings → Database
-   - Copy connection details
+   - Settings → Database → Connection string
+   - Copy the "Pool Query" connection string (recommended) or "Direct connection"
 
 2. **Update `.env.local`:**
 ```env
 NEXT_PUBLIC_GEMINI_API_KEY="your_gemini_api_key"
-DB_HOST="your-project-ref.supabase.co"
-DB_PORT="5432"
-DB_NAME="postgres"
-DB_USER="postgres"
-DB_PASSWORD="your-password"
+DATABASE_URL="postgresql://postgres.your-project-ref:your-password@aws-0-region.pooler.supabase.com:6543/postgres"
 SSL_ENABLED="true"
 UNIVERSITY_NAME="Your University"
 ```
@@ -222,11 +218,7 @@ CREATE TABLE faculty (
 | Variable | Description | Required |
 |----------|-------------|----------|
 | `NEXT_PUBLIC_GEMINI_API_KEY` | Gemini API key | Yes |
-| `DB_HOST` | Supabase host | Yes |
-| `DB_PORT` | Database port | No (5432) |
-| `DB_NAME` | Database name | No (postgres) |
-| `DB_USER` | Database user | No (postgres) |
-| `DB_PASSWORD` | Database password | Yes |
+| `DATABASE_URL` | Complete Supabase connection string | Yes |
 | `SSL_ENABLED` | Enable SSL | No (true) |
 | `UNIVERSITY_NAME` | University name | No |
 
@@ -250,9 +242,9 @@ CREATE TABLE faculty (
 
 **Database connection failed:**
 1. Verify Supabase project is active
-2. Check DB_HOST matches your project ref
-3. Confirm password is correct
-4. Ensure SSL_ENABLED is true for production
+2. Check DATABASE_URL contains correct project ref and password
+3. Ensure SSL_ENABLED is true for production
+4. Confirm connection string format is correct
 
 **Schema not loading:**
 1. Verify tables exist in Supabase

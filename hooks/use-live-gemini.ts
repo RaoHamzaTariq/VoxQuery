@@ -10,6 +10,28 @@ export function useLiveGemini() {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [connectionStatus, setConnectionStatus] = useState<'disconnected' | 'connecting' | 'connected'>('disconnected');
+  const [apiKey, setApiKey] = useState<string | null>(null);
+
+  // Fetch API key on mount
+  useEffect(() => {
+    const fetchConfig = async () => {
+      try {
+        const res = await fetch('/api/config');
+        const data = await res.json();
+        if (data.geminiApiKey) {
+          setApiKey(data.geminiApiKey);
+          console.log('✅ Gemini API key loaded');
+        } else {
+          setError('Gemini API key not configured. Please check your .env.local file.');
+          console.error('❌ Gemini API key is missing');
+        }
+      } catch (err) {
+        console.error('Failed to fetch config:', err);
+        setError('Failed to load configuration');
+      }
+    };
+    fetchConfig();
+  }, []);
 
   // Refs for audio handling
   const audioContextRef = useRef<AudioContext | null>(null);
@@ -228,10 +250,8 @@ export function useLiveGemini() {
 
   // Connect to Live API - Auto-connect using schema from env-configured database
   const connect = useCallback(async () => {
-    const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
-
     if (!apiKey) {
-      setError('Gemini API key not configured.');
+      console.error('❌ API key not available');
       return;
     }
 
@@ -416,7 +436,7 @@ export function useLiveGemini() {
       setError(err.message || 'Failed to connect to Gemini');
       setConnectionStatus('disconnected');
     }
-  }, [schema, addMessage, ensureAudioContext, playAudioChunk, setSelectedChartType]);
+  }, [schema, addMessage, ensureAudioContext, playAudioChunk, setSelectedChartType, apiKey]);
 
   // Start Recording
   const startRecording = useCallback(async () => {
