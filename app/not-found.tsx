@@ -1,4 +1,18 @@
+import type { Metadata, Viewport } from 'next';
 import Link from 'next/link';
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  themeColor: '#0f172a',
+};
+
+export const metadata: Metadata = {
+  title: '404 - Not Found | University Voice Portal',
+  description: 'The requested page could not be found.',
+};
 
 export default function NotFound() {
   return (

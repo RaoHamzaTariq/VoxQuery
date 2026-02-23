@@ -1,17 +1,23 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Inter, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 const jetbrainsMono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono' });
 
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  themeColor: '#0f172a',
+};
+
 export const metadata: Metadata = {
   title: 'University Voice Portal - AI Assistant',
   description: 'Voice-controlled university data assistant for administrators and stakeholders. Get instant insights about enrollment, attendance, GPA, and more.',
   keywords: ['university', 'voice assistant', 'AI', 'education', 'analytics', 'enrollment', 'student data'],
   authors: [{ name: 'University Portal Team' }],
-  viewport: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no',
-  themeColor: '#0f172a',
   icons: {
     icon: [
       { url: '/favicons/favicon-16x16.png', sizes: '16x16', type: 'image/png' },

@@ -12,6 +12,8 @@ import {
   PieChart,
   Pie,
   Cell,
+  AreaChart,
+  Area,
 } from 'recharts';
 import { formatNumber, cn } from '@/lib/utils';
 import { QueryResult } from '@/lib/store';
@@ -184,10 +186,13 @@ export function Visualization({ type, data }: VisualizationProps) {
               cx="50%"
               cy="50%"
               labelLine={false}
-              outerRadius="70%"
+              outerRadius="80%"
               fill="#8884d8"
               dataKey={dataKey}
-              name={xAxisKey}
+              nameKey={xAxisKey}
+              label={({ name, percent }: { name?: string; percent?: number }) => 
+                `${name || ''} ${(percent ? (percent * 100).toFixed(0) : '0')}%`
+              }
             >
               {chartData.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
