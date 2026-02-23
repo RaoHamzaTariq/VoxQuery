@@ -184,13 +184,10 @@ export function Visualization({ type, data }: VisualizationProps) {
               cx="50%"
               cy="50%"
               labelLine={false}
-              outerRadius="80%"
+              outerRadius="70%"
               fill="#8884d8"
               dataKey={dataKey}
-              nameKey={xAxisKey}
-              label={({ name, percent }: { name?: string; percent?: number }) => 
-                `${name || ''} ${(percent ? (percent * 100).toFixed(0) : '0')}%`
-              }
+              name={xAxisKey}
             >
               {chartData.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
