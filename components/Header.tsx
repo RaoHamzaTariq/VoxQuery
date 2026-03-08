@@ -8,10 +8,9 @@ export function Header() {
   return (
     <header className="flex items-center justify-between whitespace-nowrap border-b border-slate-800 bg-[#101722] px-6 py-3 shrink-0 z-20">
       <div className="flex items-center gap-4 text-white">
-        <div className="size-8 flex items-center justify-center bg-blue-500 rounded-lg text-white">
-          <span className="font-bold text-lg">DV</span>
+        <div className="flex items-center gap-3">
+          <img src="/Logo_dark_bg.png" alt="VoxQuery" className="h-10 w-auto object-contain" />
         </div>
-        <h2 className="text-white text-lg font-bold leading-tight tracking-tight">DataVoice Agent</h2>
       </div>
       
       <div className="flex items-center gap-4">

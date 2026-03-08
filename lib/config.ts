@@ -1,9 +1,9 @@
 /**
- * DataVoice Agent - Business Configuration
- * 
+ * VoxQuery - Business Configuration
+ *
  * This file contains customizable settings for your specific business needs.
  * Modify these values to tailor the AI assistant to your industry and use case.
- * 
+ *
  * For environment-based configuration, see .env.local
  */
 
@@ -169,7 +169,7 @@ export function generateSystemPrompt(
 ): string {
   const today = new Date().toISOString().split('T')[0];
   
-  return `You are DataVoice, a friendly and helpful database assistant for ${config.name}.
+  return `You are VoxQuery, a friendly and helpful database assistant for ${config.name}.
 
 DATABASE SCHEMA:
 ${schema}

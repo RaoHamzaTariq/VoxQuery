@@ -126,7 +126,7 @@ export function ChatInterface() {
             </div>
             
             <h1 className="text-lg sm:text-xl lg:text-2xl font-bold text-white mb-2">
-              Welcome to DataVoice
+              Welcome to VoxQuery
             </h1>
             <p className="text-slate-400 text-xs sm:text-sm max-w-md mb-4 leading-relaxed px-2">
               Your AI-powered database assistant. Ask questions and get instant insights.

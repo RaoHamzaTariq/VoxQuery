@@ -115,25 +115,25 @@ async function executePostgresQuery(connectionConfig: any, query: string, startT
 /**
  * Execute mock query for demo mode
  */
-function executeMockQuery(query: string): QueryResult {
+async function executeMockQuery(query: string): Promise<QueryResult> {
   const lowerQuery = query.toLowerCase();
   const startTime = Date.now();
 
   // Simulate delay
-  return new Promise((resolve) => {
+  return new Promise<QueryResult>((resolve) => {
     setTimeout(() => {
       if (lowerQuery.includes('select') && lowerQuery.includes('orders')) {
         if (lowerQuery.includes('count')) {
-          resolve({ 
-            rows: [{ count: MOCK_DATA.orders.length }], 
+          resolve({
+            rows: [{ count: MOCK_DATA.orders.length }],
             columns: ['count'],
             executionTime: (Date.now() - startTime) / 1000,
           });
         }
         if (lowerQuery.includes('sum') && lowerQuery.includes('total_amount')) {
           const total = MOCK_DATA.orders.reduce((acc, order) => acc + order.total_amount, 0);
-          resolve({ 
-            rows: [{ total_revenue: total }], 
+          resolve({
+            rows: [{ total_revenue: total }],
             columns: ['total_revenue'],
             executionTime: (Date.now() - startTime) / 1000,
           });

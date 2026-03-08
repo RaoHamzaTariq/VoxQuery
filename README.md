@@ -1,8 +1,8 @@
 <div align="center">
 
-![DataVoice Agent Banner](https://via.placeholder.com/1200x300/0f172a/10b981?text=DataVoice+Agent)
+![VoxQuery Logo](./public/Logo.png)
 
-# 🎤 DataVoice Agent
+# 🎤 VoxQuery
 
 ### Talk to Your Database. Get Instant Answers.
 
@@ -14,7 +14,7 @@
 
 **A production-ready, voice-first database assistant powered by Google Gemini 2.5 Live API**
 
-[Features](#-features) • [Quick Start](#-quick-start) • [Demo](#demo) • [Documentation](#-documentation) • [FAQ](#faq)
+[Features](#-features) • [Quick Start](#-quick-start) • [Demo](#-demo) • [Documentation](#-documentation) • [FAQ](#-faq)
 
 </div>
 
@@ -41,13 +41,13 @@
 
 ## 🌟 Overview
 
-**DataVoice Agent** transforms how you interact with your data. Instead of writing SQL queries, simply **ask questions in natural language** and get instant answers with beautiful visualizations.
+**VoxQuery** transforms how you interact with your data. Instead of writing SQL queries, simply **ask questions in natural language** and get instant answers with beautiful visualizations.
 
-Built with **Next.js 15** and powered by **Google's Gemini 2.5 Live API**, it delivers real-time voice conversations with human-like responses, automatic chart generation, and actionable insights.
+Built with **Next.js 15** and powered by **Google's Gemini 2.5 Live API**, VoxQuery delivers real-time voice conversations with human-like responses, automatic chart generation, and actionable insights.
 
-### Why DataVoice?
+### Why VoxQuery?
 
-| Traditional BI Tools | DataVoice Agent |
+| Traditional BI Tools | VoxQuery |
 |---------------------|-----------------|
 | ❌ Write complex SQL queries | ✅ Just ask in natural language |
 | ❌ Static dashboards | ✅ Dynamic, conversational insights |
@@ -124,7 +124,7 @@ Stop the AI mid-speech **three ways**:
 
 ### Try Without a Database
 
-Enable **Demo Mode** in the connection screen to explore DataVoice with sample e-commerce data:
+Enable **Demo Mode** in the connection screen to explore VoxQuery with sample e-commerce data:
 
 - **3 Sample Tables**: orders, customers, products
 - **Pre-loaded Data**: 10 orders, 5 customers, 4 products
@@ -136,7 +136,7 @@ Enable **Demo Mode** in the connection screen to explore DataVoice with sample e
 ┌─────────────────────────────────────────────────────────┐
 │ 👤 You: "Show me our total revenue"                     │
 │                                                         │
-│ 🤖 DataVoice: "Your total revenue is $1.25M. The       │
+│ 🤖 VoxQuery: "Your total revenue is $1.25M. The        │
 │     chart on screen shows monthly trends - you'll see  │
 │     we peaked in December. Pretty nice growth! Want    │
 │     to dive into any specific month?"                   │
@@ -163,8 +163,8 @@ Ensure you have the following installed:
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-org/datavoice-agent.git
-cd datavoice-agent
+git clone https://github.com/your-org/voxquery.git
+cd voxquery
 
 # Install dependencies
 npm install
@@ -195,7 +195,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ### Interrupt System
 
-DataVoice introduces an advanced interrupt system for natural conversations:
+VoxQuery introduces an advanced interrupt system for natural conversations:
 
 #### 1. Manual Interrupt (Button)
 A red **"Stop"** button appears when AI speaks. Click to interrupt immediately.
@@ -209,7 +209,7 @@ Start speaking and AI automatically detects and stops. Uses RMS-based voice acti
 **Technical Details:**
 ```typescript
 // Voice Activity Detection Threshold
-const VAD_THRESHOLD = 0.03;  // RMS level
+const VAD_THRESHOLD = 0.015;  // RMS level
 
 // Auto-interrupt when user speaks
 if (rms > VAD_THRESHOLD && isSpeaking) {
@@ -234,7 +234,7 @@ if (rms > VAD_THRESHOLD && isSpeaking) {
 | **Echo Cancellation** | Built-in browser echo cancellation |
 | **Auto Gain Control** | Automatic volume normalization |
 | **Sample Rate** | 24kHz output, 16kHz input |
-| **Latency** | < 100ms with 2048-sample buffer |
+| **Latency** | < 100ms with 1024-sample buffer |
 
 ---
 
@@ -270,7 +270,7 @@ Customize the AI for your specific industry in `lib/config.ts`:
 export const DEFAULT_CONFIG = {
   name: 'Your Business',
   industry: 'retail',  // Changes AI's domain knowledge
-  keyMetrics: ['revenue', 'orders', 'customers', 'conversion_rate'],
+  keyMetrics: ['revenue', 'orders', 'customers', 'average_order_value'],
   defaultCurrency: 'USD',
   dateFormat: 'YYYY-MM-DD',
   customInstructions: `
@@ -452,6 +452,8 @@ Results appear in real-time across three areas:
 [Interrupt Detection runs continuously]
 ```
 
+For detailed architecture documentation, see [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md).
+
 ---
 
 ## 📱 Responsive Design
@@ -582,6 +584,8 @@ Executes a SQL query against the connected database.
 | **Timeout** | 30-second query timeout |
 | **Error Masking** | Detailed errors hidden in production |
 
+For complete API documentation, see [docs/API_DOCUMENTATION.md](./docs/API_DOCUMENTATION.md).
+
 ---
 
 ## 🔧 Troubleshooting
@@ -609,7 +613,7 @@ Executes a SQL query against the connected database.
 - AI continues speaking over you
 
 **Solutions:**
-1. **Speak Louder**: Detection threshold is 0.03 RMS
+1. **Speak Louder**: Detection threshold is 0.015 RMS
 2. **Check Mic Sensitivity**: Increase in system sound settings
 3. **Use Manual Interrupt**: Press `Space` bar or click Stop button
 4. **Reduce Background Noise**: Close windows, turn off fans
@@ -686,6 +690,8 @@ npm run lint
 npx tsc --noEmit
 ```
 
+For more troubleshooting guides, see [docs/VOICE_FEATURES.md](./docs/VOICE_FEATURES.md) and [docs/SETUP_GUIDE.md](./docs/SETUP_GUIDE.md).
+
 ---
 
 ## 🚀 Deployment
@@ -743,6 +749,9 @@ CMD ["npm", "start"]
 - **AWS Amplify**: Good for AWS integration
 - **Railway**: Simple deployment
 - **Netlify**: Alternative to Vercel
+- **Docker**: Self-hosted deployment
+
+For complete deployment guide, see [docs/DEPLOYMENT.md](./docs/DEPLOYMENT.md).
 
 ---
 
@@ -755,8 +764,8 @@ We welcome contributions! Here's how to help:
 1. **Fork** the repository
 2. **Clone** your fork:
    ```bash
-   git clone https://github.com/your-username/datavoice-agent.git
-   cd datavoice-agent
+   git clone https://github.com/your-username/voxquery.git
+   cd voxquery
    ```
 3. **Create a branch**:
    ```bash
@@ -788,6 +797,8 @@ We welcome contributions! Here's how to help:
 - ✅ Test on multiple browsers
 - ✅ Ensure responsive design works
 
+For complete contribution guidelines, see [docs/CONTRIBUTING.md](./docs/CONTRIBUTING.md).
+
 ---
 
 ## 📄 License
@@ -814,7 +825,7 @@ For licensing inquiries, please contact the development team.
 
 ## 🙏 Acknowledgments
 
-DataVoice Agent is built with amazing open-source technologies:
+VoxQuery is built with amazing open-source technologies:
 
 - **[Google Gemini](https://ai.google.dev/)** - Live voice AI capabilities
 - **[Next.js](https://nextjs.org/)** - React framework by Vercel
@@ -833,7 +844,7 @@ Thank you to all the maintainers and contributors!
 
 ### Is my database secure?
 
-**Yes!** DataVoice implements multiple security layers:
+**Yes!** VoxQuery implements multiple security layers:
 - Passwords never persisted to localStorage
 - Only SELECT queries allowed by default
 - Destructive queries (DELETE, DROP, etc.) blocked
@@ -843,18 +854,18 @@ Thank you to all the maintainers and contributors!
 
 ### Can I use this with my existing database?
 
-**Absolutely!** DataVoice supports:
+**Absolutely!** VoxQuery supports:
 - MySQL 5.7 and above
 - PostgreSQL 12 and above
 - Any database schema (AI adapts automatically)
 
 ### Do I need to modify my database schema?
 
-**No!** DataVoice works with your existing schema. The AI automatically introspects your tables and columns.
+**No!** VoxQuery works with your existing schema. The AI automatically introspects your tables and columns.
 
 ### What if I don't have a database?
 
-**No problem!** Enable **Demo Mode** to explore DataVoice with sample e-commerce data. Perfect for testing and demos.
+**No problem!** Enable **Demo Mode** to explore VoxQuery with sample e-commerce data. Perfect for testing and demos.
 
 ### Can I customize the AI's personality?
 
@@ -881,7 +892,7 @@ Thank you to all the maintainers and contributors!
 Need help? We're here for you!
 
 ### Documentation
-- 📖 [Full Documentation](#-table-of-contents)
+- 📖 [Full Documentation](./docs/README.md)
 - 🚀 [Quick Start Guide](#-quick-start)
 - 🔧 [Troubleshooting](#-troubleshooting)
 
@@ -899,25 +910,10 @@ Need help? We're here for you!
 
 <div align="center">
 
-### 🎤 Ready to Transform How You Interact with Data?
+### 🎤 Ready to Transform How You Interact with Your Data?
 
-**Get started in 5 minutes:**
+[Get Started](#-quick-start) • [View Demo](#-demo) • [Read Docs](./docs/README.md)
 
-```bash
-git clone https://github.com/your-org/datavoice-agent.git
-cd datavoice-agent
-npm install
-npm run dev
-```
-
-[![Documentation](https://img.shields.io/badge/View-Full_Docs-blue?style=for-the-badge)](#-table-of-contents)
-[![Try Demo](https://img.shields.io/badge/Try-Demo_Mode-green?style=for-the-badge)](#demo)
-[![Report Issue](https://img.shields.io/badge/Report-Issue-red?style=for-the-badge)](issues)
-
----
-
-**DataVoice Agent** • Natural Voice Conversations with Your Database
-
-Made with ❤️ using Next.js, Google Gemini, and TypeScript
+**VoxQuery** - Your data, your voice, your insights.
 
 </div>

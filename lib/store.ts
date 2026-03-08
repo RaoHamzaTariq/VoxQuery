@@ -106,7 +106,7 @@ export const useStore = create<AppState>()(
       setViewMode: (mode) => set({ viewMode: mode }),
     }),
     {
-      name: 'datavoice-storage',
+      name: 'voxquery-storage',
       partialize: (state) => ({
         connection: state.connection,
         schema: state.schema,

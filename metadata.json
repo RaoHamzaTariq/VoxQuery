@@ -1,5 +1,5 @@
 {
-  "name": "DataVoice Agent",
+  "name": "VoxQuery",
   "description": "A conversational AI voice assistant for database operations and analytics.",
   "requestFramePermissions": ["microphone"]
 }

@@ -4,12 +4,11 @@ import React, { useState } from 'react';
 import { useStore } from '@/lib/store';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
-import { 
-  LayoutDashboard, 
-  Plus, 
-  Database, 
-  MessageSquare, 
-  Menu, 
+import {
+  LayoutDashboard,
+  Plus,
+  Database,
+  Menu,
   X,
   ChevronRight
 } from 'lucide-react';
@@ -30,13 +29,7 @@ export function Sidebar() {
       <div className="p-4 border-b border-slate-800">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2.5 min-w-0">
-            <div className="w-9 h-9 sm:w-10 sm:h-10 bg-gradient-to-br from-emerald-500 to-blue-500 rounded-xl flex items-center justify-center text-white shadow-lg shrink-0">
-              <MessageSquare className="w-5 h-5" />
-            </div>
-            <div className="min-w-0">
-              <h1 className="text-base font-bold text-white truncate">DataVoice</h1>
-              <p className="text-xs text-slate-400 truncate">AI Assistant</p>
-            </div>
+            <img src="/Logo_dark_bg.png" alt="VoxQuery" className="h-10 w-auto object-contain shrink-0" />
           </div>
           {isMobile && (
             <button
@@ -122,10 +115,10 @@ export function Sidebar() {
       <div className="mt-auto p-3 border-t border-slate-800">
         <div className="flex items-center gap-2.5 p-2 rounded-xl hover:bg-white/5 transition-colors">
           <div className="w-9 h-9 rounded-full bg-gradient-to-br from-emerald-500 to-blue-500 flex items-center justify-center text-white font-semibold text-sm shrink-0">
-            DV
+            VQ
           </div>
           <div className="min-w-0">
-            <p className="text-sm font-medium text-white truncate">DataVoice User</p>
+            <p className="text-sm font-medium text-white truncate">VoxQuery User</p>
             <p className="text-xs text-slate-500 truncate">Analyst</p>
           </div>
         </div>
@@ -146,10 +139,7 @@ export function Sidebar() {
           {/* Mobile Header */}
           <header className="lg:hidden flex items-center justify-between px-4 py-3 border-b border-slate-800 bg-slate-900 shrink-0">
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-blue-500 rounded-lg flex items-center justify-center text-white">
-                <MessageSquare className="w-4 h-4" />
-              </div>
-              <h1 className="text-white font-bold text-sm">DataVoice</h1>
+              <img src="/Logo_dark_bg.png" alt="VoxQuery" className="h-8 w-auto object-contain" />
             </div>
             <button
               onClick={() => setIsMobileOpen(true)}
